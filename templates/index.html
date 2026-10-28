@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>music-practice-forge &mdash; deliberate practice planner</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">&#9834;</span>
+    <div>
+      <h1>music-practice-forge</h1>
+      <p class="tag">Deliberate practice, planned to the minute</p>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="plan">Plan</button>
+    <button class="tab" data-tab="journal">Journal</button>
+    <button class="tab" data-tab="library">Drill library</button>
+  </nav>
+</header>
+
+<main>
+<section id="tab-plan" class="tabpane active">
+  <aside class="panel sidebar">
+    <h2>Your situation</h2>
+    <form id="plan-form">
+      <label>Instrument
+        <select name="instrument" id="instrument"></select>
+      </label>
+      <label>Level
+        <select name="level" id="level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate" selected>Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </label>
+      <label>Session length
+        <span class="hint"><output id="minutes-out">45</output> min</span>
+        <input type="range" name="minutes" id="minutes" min="15" max="150" step="5" value="45">
+      </label>
+      <label>Sessions per week
+        <span class="hint"><output id="spw-out">4</output> per week</span>
+        <input type="range" name="sessions_per_week" id="sessions_per_week" min="1" max="7" step="1" value="4">
+      </label>
+      <label>Session focus
+        <select name="focus_preset" id="focus_preset">
+          <option value="balanced" selected>Balanced</option>
+          <option value="technique">Technique heavy</option>
+          <option value="repertoire">Repertoire heavy</option>
+          <option value="exam">Exam / audition prep</option>
+        </select>
+      </label>
+      <label>Piece or etude
+        <input type="text" name="piece" id="piece" placeholder="e.g. Bach BWV 996" autocomplete="off">
+      </label>
+      <div class="tempo-row">
+        <label>Current bpm
+          <input type="number" name="current_tempo" id="current_tempo" min="0" max="300" step="1" placeholder="72">
+        </label>
+        <label>Target bpm
+          <input type="number" name="target_tempo" id="target_tempo" min="0" max="300" step="1" placeholder="96">
+        </label>
+      </div>
+      <fieldset>
+        <legend>Weak spots this week</legend>
+        <div class="chips" id="weak-chips"></div>
+      </fieldset>
+      <div class="presets">
+        <span class="hint">Quick setups</span>
+        <div class="preset-row">
+          <button type="button" class="chip-btn" data-preset="beginner-piano">Beginner piano 30m</button>
+          <button type="button" class="chip-btn" data-preset="guitar-fest">Guitar fest week</button>
+          <button type="button" class="chip-btn" data-preset="exam-prep">Audition in 6 weeks</button>
+        </div>
+      </div>
+      <button class="primary" type="submit">Build my practice plan</button>
+    </form>
+    <p class="footnote">Everything stays on this machine. No account, no API keys, no cloud.</p>
+  </aside>
+
+  <section class="panel results" id="results">
+    <div class="empty" id="results-empty">
+      <h2>No plan yet</h2>
+      <p>Fill in the left panel and hit <strong>Build my practice plan</strong>. You get a timed session sheet, a week layout, a tempo ladder and a readiness score.</p>
+    </div>
+    <div id="results-body" class="hidden"></div>
+  </section>
+</section>
+
+<section id="tab-journal" class="tabpane">
+  <aside class="panel sidebar">
+    <h2>Log a session</h2>
+    <form id="journal-form">
+      <label>Date
+        <input type="date" name="session_date" id="session_date">
+      </label>
+      <label>Piece
+        <input type="text" name="piece" id="j-piece" placeholder="What did you work on?" autocomplete="off">
+      </label>
+      <label>Focus area
+        <select name="area" id="j-area"></select>
+      </label>
+      <div class="tempo-row">
+        <label>Minutes
+          <input type="number" name="minutes" id="j-minutes" min="0" max="600" step="5" value="45">
+        </label>
+        <label>Tempo reached
+          <input type="number" name="tempo" id="j-tempo" min="0" max="300" step="1" placeholder="optional">
+        </label>
+      </div>
+      <label>How did it feel <span class="hint">1 rough, 5 easy</span>
+        <input type="range" name="quality" id="j-quality" min="1" max="5" step="1" value="3">
+        <span class="hint"><output id="quality-out">3</output> / 5</span>
+      </label>
+      <label>Notes
+        <textarea name="notes" id="j-notes" rows="3" placeholder="What broke, what fixed it"></textarea>
+      </label>
+      <button class="primary" type="submit">Log session</button>
+    </form>
+  </aside>
+  <section class="panel results">
+    <div id="journal-body"></div>
+  </section>
+</section>
+
+<section id="tab-library" class="tabpane">
+  <div class="panel wide">
+    <h2>Drill library</h2>
+    <p class="muted">Every drill the planner can pull into a session, with the instruction it will give you.</p>
+    <div class="lib-controls">
+      <select id="lib-instrument"></select>
+      <select id="lib-area"></select>
+      <input type="search" id="lib-search" placeholder="Search drills">
+    </div>
+    <div id="library-body"></div>
+  </div>
+</section>
+</main>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
